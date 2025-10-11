@@ -267,6 +267,7 @@ The project document mentions using NLP to analyze customer orders. This could i
         *   **Google Cloud Natural Language API:** Can analyze syntax, entities, and sentiment.
         *   **OpenAI API (GPT models):** Extremely powerful for understanding and generating text. You could prompt a GPT model with a customer's order request and ask it to extract structured information (JSON format).
         *   **Hugging Face Transformers:** A library with thousands of pre-trained models. You can use smaller, more efficient models that you might host yourself or use via their Inference API.
+*   **A Note on Choosing an AI Service:** For this project, the OpenAI API with a GPT model is an excellent starting point due to its powerful natural language understanding capabilities. It can take unstructured text (like a customer's email) and return structured JSON, which is exactly what's needed to pre-fill the order form. While other services exist, OpenAI's API is well-documented and relatively easy to integrate.
 *   **Action:**
     *   Choose an AI service (e.g., OpenAI API).
     *   Sign up for an account and get an API key.
