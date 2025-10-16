@@ -184,6 +184,8 @@ const OrderReception = ({ onSubmit }) => {
               type="submit"
               className="btn btn-primary"
               disabled={isSubmitting}
+              aria-label={isSubmitting ? "Creating order" : "Create new order"}
+              title={isSubmitting ? "Creating order" : "Create new order"}
             >
               {isSubmitting ? 'Creating Order...' : 'Create Order'}
             </button>

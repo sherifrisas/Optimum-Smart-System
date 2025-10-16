@@ -16,9 +16,9 @@ const SupplierCommunication = ({ orders }) => {
 
   const getOrderSupplier = (order) => {
     // Mock logic to assign supplier based on product type
-    if (order.productType.toLowerCase().includes('laptop')) {
+    if (order.productType && order.productType.toLowerCase().includes('laptop')) {
       return suppliers[0];
-    } else if (order.productType.toLowerCase().includes('iphone')) {
+    } else if (order.productType && order.productType.toLowerCase().includes('iphone')) {
       return suppliers[1];
     } else {
       return suppliers[2];
@@ -217,6 +217,8 @@ const SupplierCommunication = ({ orders }) => {
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim() || isLoading}
                     className="send-button"
+                    aria-label={isLoading ? "Sending message" : "Send message to supplier"}
+                    title={isLoading ? "Sending message" : "Send message to supplier"}
                   >
                     {isLoading ? 'Sending...' : 'Send'}
                   </button>

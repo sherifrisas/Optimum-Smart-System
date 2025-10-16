@@ -17,13 +17,28 @@
   align-items: center;
 }
 
-.logo h1 {
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px;
+}
+
+.logo-text h1 {
   margin: 0;
   font-size: 1.8rem;
   font-weight: 700;
 }
 
-.logo p {
+.logo-text p {
   margin: 0;
   font-size: 0.9rem;
   opacity: 0.9;
@@ -62,11 +77,16 @@
     padding: 0 1rem;
   }
   
-  .logo h1 {
+  .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logo-text h1 {
     font-size: 1.5rem;
   }
   
-  .logo p {
+  .logo-text p {
     font-size: 0.8rem;
   }
 }

@@ -7,7 +7,25 @@ import OrderList from './components/OrderList';
 import SupplierCommunication from './components/SupplierCommunication';
 import Dashboard from './components/Dashboard';
 import Accounting from './components/Accounting';
+import AIDashboard from './components/AIDashboard';
 import { ordersAPI } from './services/api';
+
+// Helper function to transform snake_case to camelCase
+const transformOrderData = (order) => {
+  return {
+    id: order.id,
+    customerName: order.customer_name,
+    phoneNumber: order.customer_phone,
+    supplierName: order.supplier_name,
+    productType: order.product_type,
+    quantity: order.quantity,
+    totalAmount: order.total_amount,
+    deliveryDate: order.delivery_date,
+    status: order.status,
+    createdAt: order.created_at,
+    updatedAt: order.updated_at
+  };
+};
 
 function App() {
   const [currentView, setCurrentView] = useState('dashboard');
@@ -21,7 +39,9 @@ function App() {
       try {
         setLoading(true);
         const response = await ordersAPI.getOrders();
-        setOrders(response.data.results || response.data);
+        // Transform the data to match frontend expectations
+        const transformedOrders = (response.data.results || response.data).map(transformOrderData);
+        setOrders(transformedOrders);
       } catch (err) {
         setError('Failed to load orders');
         console.error('Error fetching orders:', err);
@@ -46,7 +66,9 @@ function App() {
         delivery_date: orderData.deliveryDate
       });
       
-      setOrders([response.data, ...orders]);
+      // Transform the new order data
+      const transformedOrder = transformOrderData(response.data);
+      setOrders([transformedOrder, ...orders]);
       setCurrentView('orders');
     } catch (err) {
       setError('Failed to create order');
@@ -80,7 +102,9 @@ function App() {
       return (
         <div className="error-container">
           <p className="error-message">{error}</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
+          <button onClick={() => window.location.reload()} aria-label="Retry loading orders" title="Retry loading orders">
+            Retry
+          </button>
         </div>
       );
     }
@@ -96,6 +120,8 @@ function App() {
         return <SupplierCommunication orders={orders} />;
       case 'accounting':
         return <Accounting orders={orders} />;
+      case 'ai-dashboard':
+        return <AIDashboard />;
       default:
         return <Dashboard orders={orders} />;
     }

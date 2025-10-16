@@ -1,0 +1,128 @@
+/* Language Switcher Styles */
+.language-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.language-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+}
+
+.language-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.language-flag {
+  font-size: 1.2rem;
+}
+
+.language-name {
+  font-weight: 500;
+  min-width: 60px;
+  text-align: left;
+}
+
+.language-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 150px;
+  z-index: 1000;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 15px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.language-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.language-option.active {
+  background: rgba(79, 70, 229, 0.2);
+  color: #A5B4FC;
+}
+
+.language-option .language-name {
+  flex: 1;
+  min-width: auto;
+}
+
+.checkmark {
+  color: #10B981;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* RTL Support */
+[dir="rtl"] .language-name {
+  text-align: right;
+}
+
+[dir="rtl"] .language-option {
+  text-align: right;
+}
+
+[dir="rtl"] .language-dropdown {
+  right: auto;
+  left: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .language-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .language-name {
+    min-width: 50px;
+  }
+  
+  .language-dropdown {
+    min-width: 120px;
+  }
+  
+  .language-option {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+
+

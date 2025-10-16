@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "optimum-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "optimum-backend/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "optimum-backend/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "optimum-frontend/$1"
+    }
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "optimum_system.settings"
+  }
+}
+
+

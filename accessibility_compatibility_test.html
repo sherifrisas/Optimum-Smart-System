@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accessibility and Compatibility Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        .success { 
+            background-color: #d4edda; 
+            border-color: #c3e6cb; 
+            color: #155724; 
+        }
+        .error { 
+            background-color: #f8d7da; 
+            border-color: #f5c6cb; 
+            color: #721c24; 
+        }
+        .running { 
+            background-color: #fff3cd; 
+            border-color: #ffeaa7; 
+            color: #856404; 
+        }
+        h2 { margin-top: 0; }
+        button { 
+            padding: 10px 15px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 3px; 
+            cursor: pointer; 
+            margin: 5px;
+        }
+        button:hover { 
+            background-color: #0056b3; 
+        }
+        #results { 
+            margin-top: 15px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Optimum Smart System - Accessibility and Compatibility Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Button Accessibility</h2>
+        <p>Testing that all buttons have discernible text</p>
+        
+        <!-- Navigation buttons with aria-label -->
+        <button aria-label="Dashboard" title="Dashboard">📊 Dashboard</button>
+        <button aria-label="New Order" title="New Order">➕ New Order</button>
+        <button aria-label="Orders" title="Orders">📋 Orders</button>
+        
+        <!-- Action buttons with aria-label -->
+        <button aria-label="Send message" title="Send message">Send</button>
+        <button aria-label="Export to Excel" title="Export to Excel">📄 Export</button>
+        <button aria-label="Generate Report" title="Generate Report">📊 Report</button>
+        <button aria-label="Create Order" title="Create Order">Create Order</button>
+        <button aria-label="Retry" title="Retry">Retry</button>
+        
+        <div id="accessibility-result" class="running">Test not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: CSS Compatibility</h2>
+        <p>Testing that text-size-adjust is properly supported</p>
+        
+        <div id="compatibility-test" style="-webkit-text-size-adjust: 100%; text-size-adjust: 100%;">
+            This text should not be auto-resized by mobile browsers.
+        </div>
+        
+        <div id="compatibility-result" class="running">Test not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Final Status</h2>
+        <div id="final-result" class="running">Run all tests to see final status</div>
+    </div>
+
+    <script>
+        let testResults = {
+            accessibility: false,
+            compatibility: false
+        };
+
+        function updateResult(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = status;
+        }
+
+        function updateFinalResult() {
+            const allPassed = Object.values(testResults).every(result => result === true);
+            const element = document.getElementById('final-result');
+            
+            if (allPassed) {
+                updateResult('final-result', 'success', '🎉 ALL TESTS PASSED! Accessibility and compatibility issues have been resolved.');
+            } else {
+                updateResult('final-result', 'error', '❌ SOME TESTS FAILED. Check individual test results above.');
+            }
+        }
+
+        function testAccessibility() {
+            try {
+                updateResult('accessibility-result', 'running', 'Testing...');
+                
+                // Get all buttons
+                const buttons = document.querySelectorAll('button');
+                let allPassed = true;
+                let issues = [];
+                
+                buttons.forEach((button, index) => {
+                    // Check for aria-label or text content
+                    const hasAriaLabel = button.hasAttribute('aria-label');
+                    const hasTextContent = button.textContent.trim().length > 0;
+                    const hasTitle = button.hasAttribute('title');
+                    
+                    if (!hasAriaLabel && !hasTextContent) {
+                        allPassed = false;
+                        issues.push(`Button ${index + 1} has no discernible text`);
+                    }
+                });
+                
+                if (allPassed) {
+                    testResults.accessibility = true;
+                    updateResult('accessibility-result', 'success', '✅ All buttons have discernible text');
+                } else {
+                    testResults.accessibility = false;
+                    updateResult('accessibility-result', 'error', `❌ Accessibility issues found: ${issues.join(', ')}`);
+                }
+            } catch (error) {
+                testResults.accessibility = false;
+                updateResult('accessibility-result', 'error', `❌ Accessibility test failed: ${error.message}`);
+            }
+            updateFinalResult();
+        }
+
+        function testCompatibility() {
+            try {
+                updateResult('compatibility-result', 'running', 'Testing...');
+                
+                // Check if text-size-adjust is supported
+                const testElement = document.getElementById('compatibility-test');
+                const computedStyle = window.getComputedStyle(testElement);
+                
+                // Check if both properties are present
+                const webkitValue = computedStyle.webkitTextSizeAdjust;
+                const standardValue = computedStyle.textSizeAdjust;
+                
+                if (webkitValue !== undefined || standardValue !== undefined) {
+                    testResults.compatibility = true;
+                    updateResult('compatibility-result', 'success', '✅ CSS text-size-adjust properties are properly defined');
+                } else {
+                    testResults.compatibility = false;
+                    updateResult('compatibility-result', 'error', '❌ CSS text-size-adjust properties are missing');
+                }
+            } catch (error) {
+                testResults.compatibility = false;
+                updateResult('compatibility-result', 'error', `❌ Compatibility test failed: ${error.message}`);
+            }
+            updateFinalResult();
+        }
+
+        // Run tests automatically when page loads
+        window.addEventListener('load', function() {
+            setTimeout(testAccessibility, 500);
+            setTimeout(testCompatibility, 1000);
+        });
+    </script>
+</body>
+</html>

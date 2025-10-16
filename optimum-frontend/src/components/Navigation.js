@@ -7,7 +7,8 @@ const Navigation = ({ currentView, onNavigate }) => {
     { id: 'new-order', label: 'New Order', icon: '➕' },
     { id: 'orders', label: 'Orders', icon: '📋' },
     { id: 'suppliers', label: 'Suppliers', icon: '🏢' },
-    { id: 'accounting', label: 'Accounting', icon: '💰' }
+    { id: 'accounting', label: 'Accounting', icon: '💰' },
+    { id: 'ai-dashboard', label: 'AI Insights', icon: '🤖' }
   ];
 
   return (
@@ -19,8 +20,10 @@ const Navigation = ({ currentView, onNavigate }) => {
               <button
                 className={`nav-button ${currentView === item.id ? 'active' : ''}`}
                 onClick={() => onNavigate(item.id)}
+                aria-label={item.label}
+                title={item.label}
               >
-                <span className="nav-icon">{item.icon}</span>
+                <span className="nav-icon" aria-hidden="true">{item.icon}</span>
                 <span className="nav-label">{item.label}</span>
               </button>
             </li>

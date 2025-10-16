@@ -6,8 +6,11 @@ const Header = () => {
     <header className="header">
       <div className="header-content">
         <div className="logo">
-          <h1>Optimum Smart System</h1>
-          <p>AI-Powered Order Management</p>
+          <img src="/logo.png" alt="Optimum Smart System Logo" className="logo-image" />
+          <div className="logo-text">
+            <h1>Optimum Smart System</h1>
+            <p>AI-Powered Order Management</p>
+          </div>
         </div>
         <div className="header-actions">
           <div className="user-info">

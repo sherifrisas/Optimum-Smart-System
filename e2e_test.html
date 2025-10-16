@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>End-to-End Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .running { background-color: #fff3cd; border-color: #ffeaa7; color: #856404; }
+        h2 { margin-top: 0; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Optimum Smart System - End-to-End Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Backend Server Availability</h2>
+        <button onclick="testBackend()">Run Test</button>
+        <div id="backend-result" class="running">Not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: API Orders Endpoint</h2>
+        <button onclick="testAPI()">Run Test</button>
+        <div id="api-result" class="running">Not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Data Transformation</h2>
+        <button onclick="testTransformation()">Run Test</button>
+        <div id="transformation-result" class="running">Not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Frontend Server Availability</h2>
+        <button onclick="testFrontend()">Run Test</button>
+        <div id="frontend-result" class="running">Not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Final Status</h2>
+        <div id="final-result" class="running">Run all tests to see final status</div>
+    </div>
+
+    <script>
+        // Transform function (same as in App.js)
+        const transformOrderData = (order) => {
+            return {
+                id: order.id,
+                customerName: order.customer_name,
+                phoneNumber: order.customer_phone,
+                supplierName: order.supplier_name,
+                productType: order.product_type,
+                quantity: order.quantity,
+                totalAmount: order.total_amount,
+                deliveryDate: order.delivery_date,
+                status: order.status,
+                createdAt: order.created_at,
+                updatedAt: order.updated_at
+            };
+        };
+
+        let testResults = {
+            backend: false,
+            api: false,
+            transformation: false,
+            frontend: false
+        };
+
+        function updateResult(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = status;
+        }
+
+        function updateFinalResult() {
+            const allPassed = Object.values(testResults).every(result => result === true);
+            const element = document.getElementById('final-result');
+            
+            if (allPassed) {
+                updateResult('final-result', 'success', '🎉 ALL TESTS PASSED! The "Failed to load orders" issue should now be RESOLVED!');
+            } else {
+                updateResult('final-result', 'error', '❌ SOME TESTS FAILED. Check individual test results above.');
+            }
+        }
+
+        async function testBackend() {
+            try {
+                updateResult('backend-result', 'running', 'Testing...');
+                const response = await fetch('http://localhost:8000/api/orders/');
+                if (response.ok) {
+                    testResults.backend = true;
+                    updateResult('backend-result', 'success', '✅ Backend server is running and accessible');
+                } else {
+                    throw new Error(`Status: ${response.status}`);
+                }
+            } catch (error) {
+                testResults.backend = false;
+                updateResult('backend-result', 'error', `❌ Backend test failed: ${error.message}`);
+            }
+            updateFinalResult();
+        }
+
+        async function testAPI() {
+            try {
+                updateResult('api-result', 'running', 'Testing...');
+                const response = await fetch('http://localhost:8000/api/orders/');
+                if (response.ok) {
+                    const data = await response.json();
+                    const orderCount = data.count || (data.results ? data.results.length : data.length);
+                    testResults.api = true;
+                    updateResult('api-result', 'success', `✅ API working - Found ${orderCount} orders`);
+                } else {
+                    throw new Error(`Status: ${response.status}`);
+                }
+            } catch (error) {
+                testResults.api = false;
+                updateResult('api-result', 'error', `❌ API test failed: ${error.message}`);
+            }
+            updateFinalResult();
+        }
+
+        async function testTransformation() {
+            try {
+                updateResult('transformation-result', 'running', 'Testing...');
+                const response = await fetch('http://localhost:8000/api/orders/');
+                if (response.ok) {
+                    const data = await response.json();
+                    const orders = data.results || data;
+                    
+                    if (orders.length > 0) {
+                        // Transform first order
+                        const transformedOrder = transformOrderData(orders[0]);
+                        
+                        // Check required fields
+                        const requiredFields = ['id', 'customerName', 'phoneNumber', 'productType', 'quantity', 'status'];
+                        const missingFields = requiredFields.filter(field => !(field in transformedOrder));
+                        
+                        if (missingFields.length === 0) {
+                            testResults.transformation = true;
+                            updateResult('transformation-result', 'success', '✅ Data transformation successful');
+                        } else {
+                            throw new Error(`Missing fields: ${missingFields.join(', ')}`);
+                        }
+                    } else {
+                        throw new Error('No orders found');
+                    }
+                } else {
+                    throw new Error(`Status: ${response.status}`);
+                }
+            } catch (error) {
+                testResults.transformation = false;
+                updateResult('transformation-result', 'error', `❌ Transformation test failed: ${error.message}`);
+            }
+            updateFinalResult();
+        }
+
+        async function testFrontend() {
+            try {
+                updateResult('frontend-result', 'running', 'Testing...');
+                const response = await fetch('http://localhost:3000');
+                if (response.ok) {
+                    testResults.frontend = true;
+                    updateResult('frontend-result', 'success', '✅ Frontend server is running');
+                } else {
+                    throw new Error(`Status: ${response.status}`);
+                }
+            } catch (error) {
+                testResults.frontend = false;
+                updateResult('frontend-result', 'error', `❌ Frontend test failed: ${error.message}`);
+            }
+            updateFinalResult();
+        }
+    </script>
+</body>
+</html>

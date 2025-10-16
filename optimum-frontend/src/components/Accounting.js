@@ -247,10 +247,10 @@ const Accounting = ({ orders }) => {
       </div>
 
       <div className="export-section">
-        <button className="export-button">
+        <button className="export-button" aria-label="Export data to Excel" title="Export data to Excel">
           📄 Export to Excel
         </button>
-        <button className="export-button">
+        <button className="export-button" aria-label="Generate report" title="Generate report">
           📊 Generate Report
         </button>
       </div>
