@@ -20,7 +20,7 @@ const AIDashboard = () => {
   const fetchAIDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8000/api/ai/dashboard-data/');
+      const response = await fetch('/api/ai/dashboard-data/');
       if (response.ok) {
         const data = await response.json();
         setAiData(data.dashboard_data);
@@ -39,7 +39,7 @@ const AIDashboard = () => {
     
     try {
       setAnalyzing(true);
-      const response = await fetch('http://localhost:8000/api/ai/analyze-order-text/', {
+      const response = await fetch('/api/ai/analyze-order-text/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

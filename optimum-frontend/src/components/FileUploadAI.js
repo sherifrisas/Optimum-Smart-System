@@ -98,7 +98,7 @@ const FileUploadAI = ({ onAnalysisComplete, language = 'en' }) => {
       const formData = new FormData();
       formData.append('file', uploadedFile);
       
-      const response = await fetch('http://localhost:8000/api/ai/analyze-file/', {
+      const response = await fetch('/api/ai/analyze-file/', {
         method: 'POST',
         body: formData,
       });
