@@ -16,11 +16,11 @@ services:
         value: '*'
     autoDeploy: true
 
-  - type: static
+  - type: static_site
     name: optimum-frontend
     rootDir: optimum-frontend
     buildCommand: npm ci && npm run build
-    staticPublishPath: build
+    publishPath: build
     envVars:
       - key: REACT_APP_API_BASE
         value: ""
