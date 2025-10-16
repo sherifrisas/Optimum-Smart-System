@@ -32,15 +32,13 @@ if _allowed_hosts_env:
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-# CORS settings
-_cors_origins_env = os.environ.get('CORS_ALLOWED_ORIGINS')
-if _cors_origins_env:
-    CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins_env.split(',') if o.strip()]
-else:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ]
+# CORS settings (hardcoded for production on PythonAnywhere free tier)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://optimum-smart-system.vercel.app",
+    "https://optimum-smart-system-git-main-sherif-rosas-projects.vercel.app",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
