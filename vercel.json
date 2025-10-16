@@ -4,28 +4,15 @@
     {
       "src": "optimum-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    },
-    {
-      "src": "optimum-backend/wsgi.py",
-      "use": "@vercel/python"
+      "config": { "distDir": "build" }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "optimum-backend/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "optimum-frontend/$1"
+      "source": "/api/(.*)",
+      "destination": "https://sherifrosas.pythonanywhere.com/api/$1"
     }
-  ],
-  "env": {
-    "DJANGO_SETTINGS_MODULE": "optimum_system.settings"
-  }
+  ]
 }
 
 
