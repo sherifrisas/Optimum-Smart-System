@@ -16,11 +16,12 @@ services:
         value: '*'
     autoDeploy: true
 
-  - type: static_site
+  - type: web
     name: optimum-frontend
     rootDir: optimum-frontend
+    runtime: node
     buildCommand: npm ci && npm run build
-    publishPath: build
+    startCommand: npx serve -s build -l $PORT
     envVars:
       - key: REACT_APP_API_BASE
         value: ""
