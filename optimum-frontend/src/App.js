@@ -40,7 +40,8 @@ function App() {
         setLoading(true);
         const response = await ordersAPI.getOrders();
         // Transform the data to match frontend expectations
-        const transformedOrders = (response.data.results || response.data).map(transformOrderData);
+        const ordersData = response.data.results || response.data;
+        const transformedOrders = Array.isArray(ordersData) ? ordersData.map(transformOrderData) : [];
         setOrders(transformedOrders);
       } catch (err) {
         setError('Failed to load orders');
