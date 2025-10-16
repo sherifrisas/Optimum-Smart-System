@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: optimum-backend
+    rootDir: optimum-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn optimum_system.wsgi
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: optimum_system.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: 'False'
+      - key: ALLOWED_HOSTS
+        value: '*'
+    autoDeploy: true
+
+  - type: static
+    name: optimum-frontend
+    rootDir: optimum-frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_BASE
+        value: ""
+
