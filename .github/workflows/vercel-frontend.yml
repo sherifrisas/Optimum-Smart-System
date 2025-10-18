@@ -1,0 +1,47 @@
+name: Deploy Frontend to Vercel
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: optimum-frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: optimum-frontend
+        run: npm run build
+
+      - name: Deploy to Vercel
+        uses: vercel/actions/deploy@v3
+        with:
+          token: ${{ secrets.VERCEL_TOKEN }}
+          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: optimum-frontend
+          prod: true
+
+    # Notes:
+    # 1) Add these GitHub repo secrets before running:
+    #    - VERCEL_TOKEN: Personal token from Vercel account settings
+    #    - VERCEL_PROJECT_ID: From your Vercel project (created when you imported the repo)
+    # 2) The root vercel.json provides /api/* rewrites to the backend.
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://sherifshwkyrissas.pythonanywhere.com/api/$1"
+      "destination": "https://sherif007rissas.pythonanywhere.com/api/$1"
     }
   ]
 }

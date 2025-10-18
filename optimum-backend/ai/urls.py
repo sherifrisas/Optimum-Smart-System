@@ -7,6 +7,7 @@ from . import views
 
 urlpatterns = [
     # AI Analysis endpoints
+    path('analyze/', views.analyze_order_text, name='analyze'),
     path('analyze-order-text/', views.analyze_order_text, name='analyze_order_text'),
     path('recommendations/<int:order_id>/', views.get_order_recommendations, name='get_order_recommendations'),
     path('analyze-sentiment/', views.analyze_conversation_sentiment, name='analyze_sentiment'),
