@@ -39,12 +39,12 @@ const AIDashboard = () => {
     
     try {
       setAnalyzing(true);
-      const response = await fetch('/api/ai/analyze-order-text/', {
+      const response = await fetch('/api/ai/analyze/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ order_text: orderText }),
+        body: JSON.stringify({ text: orderText }),
       });
       
       if (response.ok) {
